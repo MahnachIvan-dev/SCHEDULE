@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Мой профиль — Discord стиль | Активность в реальном времени</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+
+  <style>
+   :root {
+      --bg-primary: #0a0c10;
+      --bg-secondary: rgba(30, 32, 38, 0.85);
+      --bg-tertiary: rgba(20, 22, 27, 0.9);
+      --bg-card: rgba(40, 44, 52, 0.7);
+      --text-primary: #f0f3fa;
+      --text-secondary: #a3a9b6;
+      --text-muted: #6b7280;
+      --accent: #7289da;
+      --accent-glow: #5865f2;
+      --accent-hover: #6a7ec9;
+      --success: #43b581;
+      --warning: #faa61a;
+      --danger: #f04747;
+      --border: #2c2f36;
+      --border-glow: rgba(114, 137, 218, 0.3);
+      --card-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.7);
+      --glow: 0 0 25px rgba(88, 101, 242, 0.5);
+      --glow-soft: 0 0 40px rgba(114, 137, 218, 0.25);
+      --transition-fast: 0.15s ease;
+      --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      --radius-sm: 12px;
+      --radius-md: 24px;
+      --radius-lg: 48px;
+      --radius-xl: 64px;
+      --mesh-1: radial-gradient(ellipse at 20% 30%, rgba(88, 101, 242, 0.12) 0%, transparent 55%);
+      --mesh-2: radial-gradient(ellipse at 80% 70%, rgba(114, 137, 218, 0.1) 0%, transparent 60%);
+      --mesh-3: radial-gradient(ellipse at 50% 50%, rgba(67, 181, 129, 0.06) 0%, transparent 70%);
+    }
+
+    body.light {
+      --bg-primary: #f8fafc;
+      --bg-secondary: rgba(255, 255, 255, 0.92);
+      --bg-tertiary: rgba(248, 250, 252, 0.95);
+      --bg-card: rgba(255, 255, 255, 0.85);
+      --text-primary: #1e293b;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --accent: #5865f2;
+      --accent-glow: #7289da;
+      --accent-hover: #4755d1;
+      --border: #e2e8f0;
+      --border-glow: rgba(88, 101, 242, 0.25);
+      --card-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.15);
+      --glow: 0 0 25px rgba(88, 101, 242, 0.35);
+      --glow-soft: 0 0 40px rgba(88, 101, 242, 0.15);
+      --mesh-1: radial-gradient(ellipse at 20% 30%, rgba(88, 101, 242, 0.06) 0%, transparent 55%);
+      --mesh-2: radial-gradient(ellipse at 80% 70%, rgba(114, 137, 218, 0.04) 0%, transparent 60%);
+      --mesh-3: radial-gradient(ellipse at 50% 50%, rgba(67, 181, 129, 0.03) 0%, transparent 70%);
+    }
+
+    /* ===== BASE STYLES ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 2rem 1.5rem;
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background var(--transition-normal), color var(--transition-normal);
+    }
+
+    /* ===== ANIMATED BACKGROUND ===== */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: var(--mesh-1), var(--mesh-2), var(--mesh-3);
+      background-size: 100% 100%, 100% 100%, 100% 100%;
+      animation: meshFloat 25s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: -3;
+    }
+
+    @keyframes meshFloat {
+
+      0%,
+      100% {
+        background-position: 0% 0%, 100% 100%, 50% 50%;
+      }
+
+      50% {
+        background-position: 100% 0%, 0% 100%, 30% 70%;
+      }
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      backdrop-filter: blur(60px);
+      -webkit-backdrop-filter: blur(60px);
+      z-index: -2;
+      background: linear-gradient(135deg,
+          rgba(10, 12, 16, 0.95) 0%,
+          rgba(15, 18, 24, 0.92) 50%,
+          rgba(10, 12, 16, 0.95) 100%);
+      transition: background var(--transition-normal);
+    }
+
+    body.light::after {
+      background: linear-gradient(135deg,
+          rgba(248, 250, 252, 0.95) 0%,
+          rgba(255, 255, 255, 0.92) 50%,
+          rgba(248, 250, 252, 0.95) 100%);
+    }
+
+    /* ===== PARTICLE EFFECT ===== */
+    #particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: particleFloat 15s infinite linear;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    @keyframes particleFloat {
+      0% {
+        transform: translateY(100vh) translateX(0) scale(0);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 0.3;
+      }
+
+      90% {
+        opacity: 0.3;
+      }
+
+      100% {
+        transform: translateY(-100px) translateX(100px) scale(1);
+        opacity: 0;
+      }
+    }
+
+    /* ===== CONTAINER ===== */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ===== TOP BAR ===== */
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+      animation: slideDown 0.6s var(--transition-slow) both;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .pixel-clock {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(20, 22, 27, 0.8));
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 0.6rem 1.5rem;
+      border-radius: 50px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-shadow: 0 0 10px var(--accent-glow);
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      position: relative;
+      color: #b9f2ff;
+      box-shadow: var(--glow-soft);
+      transition: all var(--transition-normal);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    .pixel-clock::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 52px;
+      padding: 2px;
+      background: linear-gradient(45deg, var(--accent), var(--accent-glow), var(--success), var(--accent));
+      background-size: 300% 300%;
+      animation: gradientShift 4s ease infinite;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+
+    @keyframes gradientShift {
+
+      0%,
+      100% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        box-shadow: var(--glow-soft);
+      }
+
+      50% {
+        box-shadow: var(--glow);
+      }
+    }
+
+    .theme-toggle,
+    .admin-link {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      padding: 0.7rem 1.4rem;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all var(--transition-normal);
+      color: var(--text-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .theme-toggle::before,
+    .admin-link::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent-glow));
+      opacity: 0;
+      transition: opacity var(--transition-normal);
+      z-index: -1;
+    }
+
+    .theme-toggle:hover,
+    .admin-link:hover {
+      transform: translateY(-3px) scale(1.02);
+      border-color: var(--accent);
+      box-shadow: var(--glow);
+      color: white;
+    }
+
+    .theme-toggle:hover::before,
+    .admin-link:hover::before {
+      opacity: 1;
+    }
+
+    .theme-toggle i,
+    .admin-link i {
+      transition: transform var(--transition-normal);
+    }
+
+    .theme-toggle:hover i,
+    .admin-link:hover i {
+      transform: rotate(15deg) scale(1.1);
+    }
+
+    /* ===== PROFILE CARD ===== */
+    .profile-card {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      margin-bottom: 2.5rem;
+      border: 1px solid var(--border);
+      box-shadow: var(--card-shadow), var(--glow-soft);
+      transition: all var(--transition-normal);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.8s var(--transition-slow) both;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .profile-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+      transition: left 0.6s ease;
+      pointer-events: none;
+    }
+
+    .profile-card:hover::before {
+      left: 100%;
+    }
+
+    .profile-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--card-shadow), var(--glow);
+      border-color: var(--border-glow);
+    }
+
+    .profile-inner {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--accent);
+      box-shadow: 0 0 0 6px rgba(114, 137, 218, 0.25), var(--glow-soft);
+      transition: all var(--transition-normal);
+      position: relative;
+      z-index: 2;
+    }
+
+    .avatar-wrapper::after {
+      content: "";
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: var(--accent);
+      border-right-color: var(--accent-glow);
+      animation: spin 3s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .avatar:hover {
+      transform: scale(1.05) rotate(3deg);
+      box-shadow: 0 0 0 8px rgba(114, 137, 218, 0.4), var(--glow);
+    }
+
+    .status-indicator {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 24px;
+      height: 24px;
+      background: rgba(0, 255, 140,);
+      border: 4px solid var(--bg-secondary);
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(0, 255, 140, 0.4);
+      animation: pulse 2s infinite;
+      z-index: 3;
+    }
+
+    .profile-info {
+      flex: 1;
+      min-width: 280px;
+      animation: slideInRight 0.8s var(--transition-slow) both;
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .profile-info h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--text-primary), var(--accent), var(--accent-glow));
+      background-size: 200% 200%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: gradientText 5s ease infinite;
+      position: relative;
+      display: inline-block;
+    }
+
+    @keyframes gradientText {
+
+      0%,
+      100% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+
+    .profile-info h1::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 60%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-glow));
+      border-radius: 2px;
+      animation: expandWidth 2s ease-out both;
+    }
+
+    @keyframes expandWidth {
+      from {
+        width: 0;
+      }
+
+      to {
+        width: 60%;
+      }
+    }
+
+    .current-activity {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(20, 22, 27, 0.6));
+      backdrop-filter: blur(12px);
+      border-radius: 60px;
+      padding: 0.8rem 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      margin: 1.2rem 0;
+      border-left: 5px solid var(--accent);
+      font-weight: 500;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      transition: all var(--transition-normal);
+      animation: slideInLeft 0.8s 0.2s var(--transition-slow) both;
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .current-activity:hover {
+      transform: translateX(5px);
+      border-left-color: var(--accent-glow);
+      box-shadow: 0 12px 40px rgba(88, 101, 242, 0.3);
+    }
+
+    .current-activity i {
+      font-size: 1.3rem;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .time-remaining {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      background: linear-gradient(135deg, rgba(88, 101, 242, 0.2), rgba(114, 137, 218, 0.15));
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      border: 1px solid var(--border-glow);
+      color: var(--accent);
+      font-weight: 600;
+      animation: countdownPulse 1s infinite;
+    }
+
+    @keyframes countdownPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.85;
+      }
+    }
+
+    .profile-meta {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      animation: fadeIn 0.8s 0.4s both;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    .meta-item i {
+      color: var(--accent);
+      font-size: 1.1rem;
+    }
+
+    /* ===== SECTIONS ===== */
+    .section {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--radius-md);
+      padding: 2rem 2.5rem;
+      margin-bottom: 2.5rem;
+      border: 1px solid var(--border);
+      transition: all var(--transition-normal);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.8s var(--transition-slow) both;
+      animation-delay: 0.2s;
+    }
+
+    .section:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .section:nth-child(4) {
+      animation-delay: 0.4s;
+    }
+
+    .section::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-glow), var(--success), var(--accent));
+      background-size: 300% 100%;
+      animation: gradientShift 4s ease infinite;
+      opacity: 0.8;
+    }
+
+    .section:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--card-shadow), var(--glow-soft);
+      border-color: var(--border-glow);
+    }
+
+    .section h2 {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 1.9rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .section h2::after {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 80px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      animation: expandWidth 1s ease-out both;
+    }
+
+    .section h2 i {
+      background: linear-gradient(135deg, var(--accent), var(--accent-glow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.5rem;
+      animation: iconGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes iconGlow {
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 5px var(--accent-glow));
+      }
+
+      50% {
+        filter: drop-shadow(0 0 15px var(--accent-glow));
+      }
+    }
+
+    /* ===== SCHEDULE BUTTON & GRID ===== */
+    .schedule-btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent-glow));
+      border: none;
+      padding: 1rem 2.5rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      margin-bottom: 1.8rem;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(88, 101, 242, 0.4);
+      animation: pulse 3s infinite;
+    }
+
+    .schedule-btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--accent-glow), var(--accent), var(--accent-glow));
+      background-size: 200% 200%;
+      animation: gradientShift 3s ease infinite;
+      opacity: 0;
+      transition: opacity var(--transition-normal);
+    }
+
+    .schedule-btn:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: var(--glow);
+    }
+
+    .schedule-btn:hover::before {
+      opacity: 1;
+    }
+
+    .schedule-btn:active {
+      transform: translateY(-1px) scale(0.98);
+    }
+
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.2rem;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+    }
+
+    .schedule-grid.open {
+      max-height: 3000px;
+      opacity: 1;
+      margin-top: 1.5rem;
+    }
+
+    .day-card {
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-md);
+      padding: 1.4rem;
+      border: 1px solid var(--border);
+      transition: all var(--transition-normal);
+      position: relative;
+      overflow: hidden;
+      animation: cardEntrance 0.5s ease both;
+    }
+
+    .day-card:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .day-card:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    .day-card:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+
+    .day-card:nth-child(4) {
+      animation-delay: 0.25s;
+    }
+
+    .day-card:nth-child(5) {
+      animation-delay: 0.3s;
+    }
+
+    .day-card:nth-child(6) {
+      animation-delay: 0.35s;
+    }
+
+    .day-card:nth-child(7) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes cardEntrance {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .day-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--accent), var(--accent-glow));
+      opacity: 0;
+      transition: opacity var(--transition-normal);
+    }
+
+    .day-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .day-card:hover::before {
+      opacity: 1;
+    }
+
+    .day-card strong {
+      font-size: 1.4rem;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 12px;
+      color: var(--accent);
+      position: relative;
+      padding-left: 10px;
+    }
+
+    .day-card strong::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    .event-item {
+      font-size: 0.95rem;
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all var(--transition-fast);
+      position: relative;
+    }
+
+    .event-item:last-child {
+      border-bottom: none;
+    }
+
+    .event-item:hover {
+      padding-left: 8px;
+      color: var(--text-primary);
+    }
+
+    .event-item:hover::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 3px;
+      height: 70%;
+      background: var(--accent);
+      border-radius: 2px;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        height: 0;
+        opacity: 0;
+      }
+
+      to {
+        height: 70%;
+        opacity: 1;
+      }
+    }
+
+    .event-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      background: rgba(88, 101, 242, 0.15);
+      padding: 4px 12px;
+      border-radius: 20px;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* ===== PROJECTS GRID ===== */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .project-card {
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: all var(--transition-normal);
+      border: 1px solid var(--border);
+      position: relative;
+      animation: cardEntrance 0.5s ease both;
+    }
+
+    .project-card:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .project-card:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .project-card:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .project-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(88, 101, 242, 0.1), transparent 50%);
+      opacity: 0;
+      transition: opacity var(--transition-normal);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: var(--card-shadow), var(--glow);
+      border-color: var(--accent);
+    }
+
+    .project-card:hover::before {
+      opacity: 1;
+    }
+
+    .project-img-wrapper {
+      position: relative;
+      overflow: hidden;
+      height: 180px;
+    }
+
+    .project-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .project-card:hover .project-img {
+      transform: scale(1.1) rotate(1deg);
+    }
+
+    .project-img-wrapper::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(20, 22, 27, 0.9), transparent 60%);
+      opacity: 0;
+      transition: opacity var(--transition-normal);
+    }
+
+    .project-card:hover .project-img-wrapper::after {
+      opacity: 1;
+    }
+
+    .project-info {
+      padding: 1.4rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .project-info h3 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+      transition: color var(--transition-fast);
+    }
+
+    .project-card:hover .project-info h3 {
+      color: var(--accent);
+    }
+
+    .project-info p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.2rem;
+      line-height: 1.5;
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-glow));
+      padding: 0.5rem 1.4rem;
+      border-radius: 50px;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all var(--transition-normal);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(88, 101, 242, 0.3);
+    }
+
+    .github-link::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--accent-glow), var(--accent), var(--accent-glow));
+      background-size: 200% 200%;
+      animation: gradientShift 3s ease infinite;
+      opacity: 0;
+      transition: opacity var(--transition-normal);
+    }
+
+    .github-link:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--glow);
+    }
+
+    .github-link:hover::before {
+      opacity: 1;
+    }
+
+    .github-link i {
+      transition: transform var(--transition-fast);
+    }
+
+    .github-link:hover i {
+      transform: rotate(-10deg) scale(1.1);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      padding: 2rem;
+      opacity: 0.8;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      animation: fadeIn 1s 0.6s both;
+      position: relative;
+    }
+
+    footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    footer i {
+      color: var(--accent);
+      animation: heartbeat 1.5s ease-in-out infinite;
+      margin: 0 4px;
+    }
+
+    @keyframes heartbeat {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.2);
+      }
+    }
+
+    /* ===== CUSTOM CURSOR (Desktop) ===== */
+    @media (min-width: 1024px) {
+      .cursor {
+        position: fixed;
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--accent);
+        border-radius: 50%;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition: transform 0.1s ease, opacity 0.2s ease;
+        z-index: 9999;
+        mix-blend-mode: difference;
+        opacity: 0.8;
+      }
+
+      .cursor-follower {
+        position: fixed;
+        width: 40px;
+        height: 40px;
+        border: 1px solid var(--accent-glow);
+        border-radius: 50%;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        z-index: 9998;
+        opacity: 0.3;
+      }
+
+      body.hovering .cursor {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 1;
+        border-color: var(--accent-glow);
+      }
+
+      body.hovering .cursor-follower {
+        transform: translate(-50%, -50%) scale(1.3);
+        opacity: 0.15;
+      }
+
+      a,
+      button,
+      .theme-toggle,
+      .admin-link,
+      .schedule-btn,
+      .github-link,
+      .project-card,
+      .day-card {
+        cursor: none;
+      }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .profile-inner {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .profile-info {
+        animation: fadeIn 0.8s 0.3s both !important;
+      }
+
+      .profile-meta {
+        justify-content: center;
+      }
+
+      .pixel-clock {
+        font-size: 1.4rem;
+        padding: 0.5rem 1.2rem;
+      }
+
+      .projects-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+
+      .top-bar {
+        justify-content: center;
+        gap: 0.8rem;
+      }
+
+      .pixel-clock {
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+      }
+
+      .theme-toggle,
+      .admin-link {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .profile-card {
+        padding: 1.8rem;
+        border-radius: var(--radius-md);
+      }
+
+      .avatar {
+        width: 110px;
+        height: 110px;
+      }
+
+      .profile-info h1 {
+        font-size: 2.2rem;
+      }
+
+      .section {
+        padding: 1.5rem;
+        border-radius: var(--radius-sm);
+      }
+
+      .section h2 {
+        font-size: 1.6rem;
+      }
+
+      .schedule-btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .schedule-grid,
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .project-img-wrapper {
+        height: 160px;
+      }
+    }
+
+    /* ===== ACCESSIBILITY ===== */
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ===== LOADING STATE ===== */
+    .loading {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .loading::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      animation: loadingShimmer 1.5s infinite;
+    }
+
+    @keyframes loadingShimmer {
+      to {
+        left: 100%;
+      }
+    }
+
+    /* ===== TOAST NOTIFICATIONS ===== */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--bg-tertiary);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--success);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.5rem;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      z-index: 10000;
+      transform: translateX(400px);
+      opacity: 0;
+      transition: all var(--transition-normal);
+      animation: toastIn 0.4s ease forwards;
+    }
+
+    .toast.error {
+      border-left-color: var(--danger);
+    }
+
+    .toast.warning {
+      border-left-color: var(--warning);
+    }
+
+    @keyframes toastIn {
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .toast.hide {
+      animation: toastOut 0.4s ease forwards;
+    }
+
+    @keyframes toastOut {
+      to {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+    }
+
+    .toast i {
+      font-size: 1.3rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="particles"></div>
+  <div class="container">
+    <div class="top-bar">
+      <div class="pixel-clock" id="pixelClock">--:--:--</div>
+      <div class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i><span>Тёмная</span></div>
+      
+    </div>
+
+    <div class="profile-card" id="profileCard">
+      <div class="profile-inner">
+        <div class="avatar-wrapper"><img id="avatarImg" class="avatar" src="" alt="avatar"><div class="status-indicator" title="Онлайн"></div></div>
+        <div class="profile-info">
+          <h1 id="profileName">Загрузка...</h1>
+          <div class="current-activity" id="currentActivityBlock">
+            <i id="activityIcon" class="fas fa-hourglass-half"></i>
+            <span id="activityText">Определение активности...</span>
+            <span id="activityTimer" class="time-remaining"></span>
+          </div>
+          <div class="profile-meta">
+            <div class="meta-item"><i class="far fa-calendar-alt"></i><span>Актуальное расписание на сегодня</span></div>
+            <div class="meta-item"><i class="fas fa-bolt"></i><span>Обновление в реальном времени</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><i class="fas fa-tasks"></i> Расписание на неделю</h2>
+      <button class="schedule-btn" id="toggleScheduleBtn"><i class="fas fa-eye"></i> Показать всё расписание</button>
+      <div id="scheduleContainer" class="schedule-grid"></div>
+    </div>
+
+    <div class="section">
+      <h2><i class="fab fa-github"></i> Мои проекты</h2>
+      <div id="projectsGrid" class="projects-grid"></div>
+    </div>
+
+    <footer><i class="fas fa-bolt"></i> Активность обновляется автоматически <i class="fas fa-sync-alt"></i> • Динамические слоты расписания <i class="fas fa-code"></i></footer>
+  </div>
+  <div id="toastContainer"></div>
+
+  <script>
+    // ========== КОНСТАНТЫ JSON BIN (те же, что в админке) ==========
+    const JSONBIN_BIN_ID = "69dbd5a236566621a8a696e6";
+    const JSONBIN_MASTER_KEY = "$2a$10$xOPuIrqTd9DYAZmH08AVheX68HX2rdQjP99fTXjr2IEzOp/YKBMtW";
+
+    // ========== ГЛОБАЛЬНЫЕ ДАННЫЕ ==========
+    let appData = {
+      profile: { name: "Алексей", avatar: "https://randomuser.me/api/portraits/men/32.jpg" },
+      schedule: {
+        monday: [{ start: "09:00", end: "12:00", title: "Разработка фронта" }],
+        tuesday: [], wednesday: [], thursday: [], friday: [], saturday: [], sunday: []
+      },
+      projects: [],
+      currentOverride: null
+    };
+
+    // ========== ЗАГРУЗКА ДАННЫХ (сначала JSON Bin, потом localStorage) ==========
+    async function loadData() {
+      // Пытаемся загрузить из JSON Bin
+      let loadedFromCloud = false;
+      if (JSONBIN_BIN_ID && JSONBIN_BIN_ID !== "ВАШ_BIN_ID") {
+        try {
+          const headers = { "Content-Type": "application/json" };
+          if (JSONBIN_MASTER_KEY && JSONBIN_MASTER_KEY !== "ВАШ_MASTER_KEY") headers["X-Master-Key"] = JSONBIN_MASTER_KEY;
+          const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, { headers });
+          if (res.ok) {
+            const json = await res.json();
+            const remoteData = json.record;
+            if (remoteData) {
+              appData = remoteData;
+              if (!appData.projects) appData.projects = [];
+              appData.projects.forEach(p => {
+                if (p.projectUrl === undefined) p.projectUrl = "";
+                if (p.status === undefined) p.status = "development";
+              });
+              // Сохраняем в localStorage для резерва
+              localStorage.setItem("userPortfolioData", JSON.stringify(appData));
+              loadedFromCloud = true;
+              showToast("Данные загружены из облака ☁️", "success", 3000);
+            }
+          }
+        } catch (e) { console.warn("Cloud load failed", e); }
+      }
+
+      // Если из облака не загрузилось — берём из localStorage
+      if (!loadedFromCloud) {
+        const saved = localStorage.getItem("userPortfolioData");
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            if (parsed.profile) appData.profile = parsed.profile;
+            if (parsed.schedule) appData.schedule = parsed.schedule;
+            if (parsed.projects) appData.projects = parsed.projects;
+            if (parsed.currentOverride) appData.currentOverride = parsed.currentOverride;
+            appData.projects.forEach(p => {
+              if (p.projectUrl === undefined) p.projectUrl = "";
+              if (p.status === undefined) p.status = "development";
+            });
+          } catch (e) { console.warn(e); }
+        }
+      }
+
+      // Нормализация расписания
+      const days = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
+      days.forEach(day => { if (!appData.schedule[day]) appData.schedule[day] = []; });
+
+      renderMainPage();
+      startRealTimeUpdater();
+      setTimeout(() => showToast('Добро пожаловать! Активность отслеживается в реальном времени 🚀', 'success', 5000), 1500);
+    }
+
+    // ========== ОТРИСОВКА ==========
+    function renderMainPage() {
+      document.getElementById("avatarImg").src = appData.profile.avatar || "https://via.placeholder.com/140x140?text=👤";
+      document.getElementById("profileName").innerText = appData.profile.name || "User";
+      renderScheduleTable();
+      renderProjects();
+      updateCurrentActivityDisplay();
+    }
+
+    function renderScheduleTable() {
+      const container = document.getElementById("scheduleContainer");
+      const daysOrder = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
+      const dayNames = ["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"];
+      container.innerHTML = "";
+      daysOrder.forEach((day, idx) => {
+        const events = appData.schedule[day] || [];
+        const card = document.createElement("div"); card.className = "day-card";
+        let eventsHTML = "";
+        if (events.length === 0) eventsHTML = `<div class="event-item"><span>—</span> <em style="color:var(--text-muted)">Нет задач</em></div>`;
+        else events.forEach(ev => { eventsHTML += `<div class="event-item"><span class="event-time">${ev.start}–${ev.end}</span><strong>${escapeHtml(ev.title)}</strong></div>`; });
+        card.innerHTML = `<strong>${dayNames[idx]}</strong>${eventsHTML}`;
+        container.appendChild(card);
+      });
+    }
+
+    function renderProjects() {
+      const grid = document.getElementById("projectsGrid");
+      grid.innerHTML = "";
+      if (appData.projects.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--text-muted);"><i class="fas fa-folder-open" style="font-size:3rem; margin-bottom:1rem;"></i><p>Нет проектов. Добавьте в админ-панели.</p></div>`;
+        return;
+      }
+      appData.projects.forEach((proj, index) => {
+        const card = document.createElement("div"); card.className = "project-card";
+        let statusClass = "", statusText = "";
+        switch(proj.status) {
+          case 'active': statusClass = 'status-active'; statusText = '🟢 Активен'; break;
+          case 'completed': statusClass = 'status-completed'; statusText = '✅ Завершён'; break;
+          default: statusClass = 'status-development'; statusText = '🛠 В разработке';
+        }
+        const projectUrl = proj.projectUrl || "";
+        const githubUrl = proj.githubUrl || "";
+        card.innerHTML = `
+          <div class="project-img-wrapper"><img class="project-img" src="${proj.imageUrl || 'https://picsum.photos/id/26/400/240'}" alt="${escapeHtml(proj.title)}" onerror="this.src='https://picsum.photos/id/26/400/240'"></div>
+          <div class="project-info">
+            <div class="project-badge ${statusClass}">${statusText}</div>
+            <h3>${escapeHtml(proj.title)}</h3>
+            <p>${escapeHtml(proj.description)}</p>
+            <div class="project-links">
+              ${githubUrl ? `<a href="${githubUrl}" target="_blank" class="project-link-btn"><i class="fab fa-github"></i> GitHub</a>` : ''}
+              ${projectUrl ? `<a href="${projectUrl}" target="_blank" class="project-link-btn"><i class="fas fa-external-link-alt"></i> Открыть</a>` : ''}
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // ========== АКТИВНОСТЬ И ТАЙМЕРЫ (как в предыдущей версии) ==========
+    function getCurrentDayKey() { const days = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"]; return days[new Date().getDay()]; }
+    function getCurrentEventFromSchedule() {
+      const todayKey = getCurrentDayKey();
+      const events = appData.schedule[todayKey] || [];
+      const now = new Date();
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      for (let ev of events) {
+        const [startH, startM] = ev.start.split(":").map(Number);
+        const [endH, endM] = ev.end.split(":").map(Number);
+        const startMin = startH * 60 + startM, endMin = endH * 60 + endM;
+        if (currentMinutes >= startMin && currentMinutes < endMin) return { title: ev.title, endTime: endMin };
+      }
+      return null;
+    }
+    function formatTimeRemaining(endDate) {
+      const diff = Math.max(0, Math.floor((endDate - new Date()) / 1000));
+      if (diff < 60) return `${diff}с`;
+      const mins = Math.floor(diff / 60), secs = diff % 60;
+      return `${mins}м ${secs}с`;
+    }
+    function updateCurrentActivityDisplay() {
+      const iconEl = document.getElementById("activityIcon");
+      const textEl = document.getElementById("activityText");
+      const timerEl = document.getElementById("activityTimer");
+      let activeTitle = "Свободное время", remainingText = "", iconClass = "fas fa-coffee";
+      if (appData.currentOverride && new Date() < new Date(appData.currentOverride.endTime)) {
+        activeTitle = appData.currentOverride.title;
+        remainingText = formatTimeRemaining(new Date(appData.currentOverride.endTime));
+        iconClass = "fas fa-bolt";
+      } else {
+        if (appData.currentOverride) appData.currentOverride = null;
+        const scheduled = getCurrentEventFromSchedule();
+        if (scheduled) {
+          activeTitle = scheduled.title;
+          const endDate = new Date(); endDate.setHours(Math.floor(scheduled.endTime / 60), scheduled.endTime % 60, 0);
+          remainingText = formatTimeRemaining(endDate);
+          iconClass = "fas fa-calendar-check";
+        } else remainingText = "—";
+      }
+      iconEl.className = iconClass;
+      textEl.innerHTML = `<strong>${escapeHtml(activeTitle)}</strong>`;
+      timerEl.innerText = remainingText;
+      const statusEl = document.querySelector('.status-indicator');
+      if (remainingText && remainingText !== "—") { statusEl.style.background = 'var(--success)'; statusEl.style.boxShadow = '0 0 0 3px rgba(67,181,129,0.4)'; }
+      else { statusEl.style.background = 'var(--text-muted)'; statusEl.style.boxShadow = '0 0 0 3px rgba(107,114,128,0.3)'; }
+    }
+    function startRealTimeUpdater() {
+      updateCurrentActivityDisplay();
+      setInterval(() => {
+        updateCurrentActivityDisplay();
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false });
+        const clockEl = document.getElementById("pixelClock");
+        if (clockEl.innerText !== timeStr) clockEl.innerText = timeStr;
+      }, 1000);
+    }
+
+    // ========== UI ИНИЦИАЛИЗАЦИЯ ==========
+    function initUI() {
+      const savedTheme = localStorage.getItem("theme") || "dark";
+      if (savedTheme === "light") document.body.classList.add("light");
+      const themeBtn = document.getElementById("themeToggle");
+      themeBtn.addEventListener("click", () => {
+        document.body.classList.toggle("light");
+        const isLight = document.body.classList.contains("light");
+        localStorage.setItem("theme", isLight ? "light" : "dark");
+        const icon = themeBtn.querySelector("i");
+        icon.style.transform = 'scale(0) rotate(180deg)';
+        setTimeout(() => { icon.className = isLight ? "fas fa-sun" : "fas fa-moon"; icon.style.transform = ''; }, 150);
+        themeBtn.querySelector("span").innerText = isLight ? "Светлая" : "Тёмная";
+        showToast(`Тема переключена на ${isLight ? 'светлую' : 'тёмную'} ✨`, 'success', 2000);
+      });
+      const toggleBtn = document.getElementById("toggleScheduleBtn");
+      const scheduleGrid = document.getElementById("scheduleContainer");
+      toggleBtn.addEventListener("click", () => {
+        const isOpen = scheduleGrid.classList.toggle("open");
+        toggleBtn.innerHTML = isOpen ? '<i class="fas fa-eye-slash"></i> Скрыть расписание' : '<i class="fas fa-eye"></i> Показать всё расписание';
+        if (isOpen) showToast('Расписание развёрнуто 📋', 'success', 2000);
+      });
+      document.querySelector('.admin-link')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        showToast('Переход в админ-панель... 🔐', 'success', 1500);
+        setTimeout(() => { window.location.href = 'admin.html'; }, 1600);
+      });
+    }
+
+    function showToast(message, type = 'success', duration = 4000) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', warning: 'fa-exclamation-triangle' };
+      toast.innerHTML = `<i class="fas ${icons[type]}"></i><span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => { toast.classList.add('hide'); setTimeout(() => toast.remove(), 400); }, duration);
+    }
+
+    function escapeHtml(str) { if (!str) return ''; const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
+
+    // Запуск
+    document.addEventListener('DOMContentLoaded', () => {
+      initParticles();   // функция создания частиц (та же, что в предыдущей версии)
+      initUI();
+      loadData();
+    });
+
+    // Простая функция частиц (если не была определена выше)
+    function initParticles() {
+      const container = document.getElementById('particles');
+      if (!container) return;
+      const particleCount = window.innerWidth > 768 ? 35 : 15;
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (15 + Math.random() * 20) + 's';
+        particle.style.width = (2 + Math.random() * 4) + 'px';
+        particle.style.height = particle.style.width;
+        particle.style.background = `hsl(${220 + Math.random() * 40}, 70%, 65%)`;
+        container.appendChild(particle);
+      }
+    }
+  </script>
+</body>
+</html>
