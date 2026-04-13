@@ -1647,7 +1647,7 @@
         let statusClass = "", statusText = "";
         switch(proj.status) {
           case 'active': statusClass = 'status-active'; statusText = '🟢 Активен'; break;
-          case 'completed': statusClass = 'status-completed'; statusText = '✅ Завершён'; break;
+          case 'completed': statusClass = 'status-completed'; statusText = '🟠 Архивирован'; break;
           default: statusClass = 'status-development'; statusText = '🛠 В разработке';
         }
         const projectUrl = proj.projectUrl || "";
