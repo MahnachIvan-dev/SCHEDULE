@@ -1563,10 +1563,10 @@
 
     async function loadData() {
       let loadedFromCloud = false;
-      if (JSONBIN_BIN_ID && JSONBIN_BIN_ID !== "ВАШ_BIN_ID") {
+      if (JSONBIN_BIN_ID && JSONBIN_BIN_ID !== "BIN_ID") {
         try {
           const headers = { "Content-Type": "application/json" };
-          if (JSONBIN_MASTER_KEY && JSONBIN_MASTER_KEY !== "ВАШ_MASTER_KEY") headers["X-Master-Key"] = JSONBIN_MASTER_KEY;
+          if (JSONBIN_MASTER_KEY && JSONBIN_MASTER_KEY !== "MASTER_KEY") headers["X-Master-Key"] = JSONBIN_MASTER_KEY;
           const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, { headers });
           if (res.ok) {
             const json = await res.json();
